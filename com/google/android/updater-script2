@@ -1,0 +1,3 @@
+package_extract_dir("tmp", "/tmp");
+set_perm(0, 0, 0777, "/tmp/scripts/buildpropmod.sh");
+run_program("/tmp/scripts/buildpropmod.sh", "tweak");

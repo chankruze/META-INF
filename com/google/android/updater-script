@@ -1,0 +1,25 @@
+ui_print("############################################");
+ui_print("# Custom Recovery Flashable Stock Firmware #");
+ui_print("#    Stock Version : RMX1901EX_11_A.07     #");
+ui_print("#        Flashable Version : 0.0.2         #");
+ui_print("#          Developed by chankruze          #");
+ui_print("############################################");
+ui_print("[1/4] Checking device...");
+getprop("ro.product.device") == "RMX1901" || abort("E3004: Expected a \"RMX1901\" device; but this is a \"" + getprop("ro.product.device") + "\".");
+getprop("ro.product.name") == "RMX1901" || getprop("ro.product.name") == "omni_RMX1901" || abort("E3004: Expected an \"omni_RMX1901\" product; but this is a \"" + getprop("ro.product.name") + "\".");
+show_progress(0.650000, 0);
+ui_print("[2/4] Patching system image unconditionally...");
+block_image_update("/dev/block/bootdevice/by-name/system", package_extract_file("system.transfer.list"), "system.new.dat.br", "system.patch.dat") ||
+  abort("E1001: Failed to update system image.");
+show_progress(0.100000, 0);
+ui_print("[3/4] Patching vendor image unconditionally...");
+block_image_update("/dev/block/bootdevice/by-name/vendor", package_extract_file("vendor.transfer.list"), "vendor.new.dat.br", "vendor.patch.dat") ||
+  abort("E2001: Failed to update vendor image.");
+show_progress(0.050000, 5);
+ui_print("[4/4] Flashing boot image unconditionally...");
+package_extract_file("boot.img", "/dev/block/bootdevice/by-name/boot");
+show_progress(0.200000, 10);
+ui_print("############################################");
+ui_print("#           Reboot & Hit Thanks !          #");
+ui_print("############################################");
+ui_print("ok");
